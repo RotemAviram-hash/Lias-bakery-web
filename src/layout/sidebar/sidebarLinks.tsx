@@ -9,7 +9,7 @@ import {
 export const sidebarList = [
   {
     name: "דף הבית",
-    to: ROUTES.WORKSPACE,
+    to: ROUTES.HOME,
     icon: <Home />,
   },
   {

@@ -7,10 +7,12 @@ import {
   alpha,
   useTheme,
   Button,
+  Stack,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../router/routes";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 
 const PageNotFound: React.FC = () => {
@@ -33,7 +35,7 @@ const PageNotFound: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      {/* תאורת רקע רכה ואבסטרקטית */}
+      {/* תאורת רקע דינמית מבוססת Palette */}
       <Box
         sx={{
           position: "absolute",
@@ -43,8 +45,8 @@ const PageNotFound: React.FC = () => {
           width: { xs: "100%", md: "700px" },
           height: "450px",
           background: isDark
-            ? "radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(0,0,0,0) 70%)"
-            : "radial-gradient(circle, rgba(99,102,241,0.06) 0%, rgba(255,255,255,0) 70%)",
+            ? `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.15)} 0%, rgba(0,0,0,0) 70%)`
+            : `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.08)} 0%, rgba(255,255,255,0) 70%)`,
           filter: "blur(100px)",
           pointerEvents: "none",
           zIndex: 0,
@@ -64,8 +66,8 @@ const PageNotFound: React.FC = () => {
             border: "1px solid",
             borderColor: "divider",
             boxShadow: isDark
-              ? "0 20px 40px rgba(0,0,0,0.4)"
-              : "0 20px 40px rgba(0,0,0,0.03)",
+              ? "0 20px 40px rgba(0,0,0,0.5)"
+              : "0 20px 40px rgba(0,0,0,0.04)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -102,14 +104,14 @@ const PageNotFound: React.FC = () => {
             </Typography>
           </Box>
 
-          {/* מספר 404 מעוצב עם גרדיאנט */}
+          {/* מספר 404 מבוסס ערכי ה-Palette במערכת */}
           <Typography
             variant="h1"
             sx={{
               fontSize: { xs: "5.5rem", sm: "7rem" },
               fontWeight: 900,
               lineHeight: 1,
-              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+              background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary?.main || theme.palette.primary.light} 100%)`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               letterSpacing: "-2px",
@@ -128,7 +130,7 @@ const PageNotFound: React.FC = () => {
               fontSize: { xs: "1.5rem", sm: "1.85rem" },
             }}
           >
-            אופס! הלכת לאיבוד בלוח המשימות?
+            אופס! העמוד שחיפשת לא נמצא
           </Typography>
 
           {/* תיאור */}
@@ -141,8 +143,8 @@ const PageNotFound: React.FC = () => {
               fontSize: { xs: "0.95rem", sm: "1rem" },
             }}
           >
-            העמוד שחיפשת אינו קיים, הועבר, או שאולי המשימה הוסרה מהלוח לצמיתות.
-            אל דאגה, שום דבר חשוב לא אבד.
+            נראה שהכתובת שנסית להגיע אליה אינה קיימת, הוסרה, או שהיא זמנית אינה
+            זמינה.
           </Typography>
 
           {/* כרטיס טיפ פנימי */}
@@ -173,36 +175,66 @@ const PageNotFound: React.FC = () => {
                 💡
               </Box>
               <span>
-                <strong>טיפ מהמערכת:</strong> חזור למסך הבית כדי להמשיך לנהל את
-                המשימות שלך בפרודוקטיביות.
+                <strong>טיפ:</strong> אפשר לחזור לעמוד הבית או לעמוד הקודם כדי
+                להמשיך לגלוש במערכת בקלות.
               </span>
             </Typography>
           </Box>
 
-          {/* כפתור חזרה */}
-          <Button
-            variant="contained"
-            size="large"
-            startIcon={<HomeRoundedIcon sx={{ ml: 1 }} />}
-            onClick={() => navigate(ROUTES.HOME)}
-            sx={{
-              width: "100%",
-              py: 1.6,
-              borderRadius: "14px",
-              fontWeight: 700,
-              textTransform: "none",
-              bgcolor: "#6366f1",
-              color: "#ffffff",
-              boxShadow: "0 8px 20px rgba(99,102,241,0.3)",
-              transition: "all 0.2s ease-in-out",
-              "&:hover": {
-                bgcolor: "#4f46e5",
-                transform: "translateY(-2px)",
-              },
-            }}
+          {/* כפתורי פעולה */}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            sx={{ width: "100%" }}
           >
-            חזרה למסך הבית
-          </Button>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<HomeRoundedIcon sx={{ ml: 0.5 }} />}
+              onClick={() => navigate(ROUTES.HOME)}
+              sx={{
+                flex: 1,
+                py: 1.5,
+                borderRadius: "14px",
+                fontWeight: 700,
+                textTransform: "none",
+                boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.25)}`,
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: `0 12px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
+                },
+              }}
+            >
+              עמוד הבית
+            </Button>
+
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<ArrowBackRoundedIcon sx={{ ml: 0.5 }} />}
+              onClick={() => navigate(-1)}
+              sx={{
+                flex: 1,
+                py: 1.5,
+                borderRadius: "14px",
+                fontWeight: 700,
+                textTransform: "none",
+                borderColor: "divider",
+                color: "text.primary",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  borderColor: "text.secondary",
+                  bgcolor: isDark
+                    ? alpha("#ffffff", 0.05)
+                    : alpha("#000000", 0.03),
+                  transform: "translateY(-2px)",
+                },
+              }}
+            >
+              חזרה אחורה
+            </Button>
+          </Stack>
         </Paper>
       </Container>
     </Box>

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   Box,
   Container,
@@ -20,16 +21,16 @@ import {
   Handshake as HandshakeIcon,
 } from "@mui/icons-material";
 
-export default function AboutUs() {
-  const theme = useTheme();
+// 📱 קבועים מחוץ לקומפוננטה מונעים חישוב והקצאת זיכרון מחדש בכל render
+const PHONE_NUMBER = "972500000000";
+const DEFAULT_MESSAGE = encodeURIComponent(
+  "[שלום! אשמח לשמוע עוד פרטים ולהזמין מאפים מעולים 🥐]",
+);
+const WHATSAPP_URL = `https://wa.me/${PHONE_NUMBER}?text=${DEFAULT_MESSAGE}`;
+const PHONE_CALL_URL = `tel:+${PHONE_NUMBER}`;
 
-  // 📱 מספר הטלפון וההודעה המובנית ל-WhatsApp
-  const phoneNumber = "972500000000"; // יש להחליף במספר הטלפון המלא כולל קידומת מדינה ללא +
-  const defaultMessage = encodeURIComponent(
-    "[שלום! אשמח לשמוע עוד פרטים ולהזמין מאפים מעולים 🥐]",
-  );
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${defaultMessage}`;
-  const phoneCallUrl = `tel:+972500000000`; // יש להחליף במספר הטלפון לחיוג ישיר
+function AboutUs() {
+  const theme = useTheme();
 
   return (
     <Box
@@ -324,14 +325,14 @@ export default function AboutUs() {
               {/* כפתור ווצאפ */}
               <Button
                 component="a"
-                href={whatsappUrl}
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="contained"
                 size="large"
                 startIcon={<WhatsAppIcon />}
                 sx={{
-                  backgroundColor: "#25D366", // ירוק ווצאפ מוכר ואהוב
+                  backgroundColor: "#25D366",
                   color: "#FFFFFF",
                   fontWeight: "bold",
                   fontSize: "1.05rem",
@@ -352,7 +353,7 @@ export default function AboutUs() {
               {/* כפתור חיוג טלפוני */}
               <Button
                 component="a"
-                href={phoneCallUrl}
+                href={PHONE_CALL_URL}
                 variant="outlined"
                 size="large"
                 startIcon={<PhoneIcon />}
@@ -383,3 +384,5 @@ export default function AboutUs() {
     </Box>
   );
 }
+
+export default memo(AboutUs);
